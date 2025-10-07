@@ -25,7 +25,7 @@ import numpy as np
 import pefile
 from sklearn.feature_extraction import FeatureHasher
 import signify
-from signify.authenticode import SignedPEFile
+from signify.authenticode.signed_file import SignedPEFile
 from datetime import datetime
 
 
@@ -114,7 +114,7 @@ class ByteHistogram(FeatureType):
     def raw_features(self, bytez, pe):
         counts = np.bincount(np.frombuffer(bytez, dtype=np.uint8), minlength=256)
         return counts.tolist()
-    
+
     def process_raw_features(self, raw_obj):
         counts = np.array(raw_obj, dtype=np.float32)
         sum = counts.sum()
@@ -997,7 +997,7 @@ class PEFormatWarnings(FeatureType):
         self.warning_prefixes = set()
         self.warning_suffixes = set()
         self.warning_ids = {}
-        
+
         if isinstance(warnings_file, Path) and warnings_file.exists():
             with open(warnings_file, "r") as f:
                 i = 0
